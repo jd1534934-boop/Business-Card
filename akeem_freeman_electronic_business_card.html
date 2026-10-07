@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Akeem Freeman - Electronic Business Card">
+<title>Akeem Freeman | Electronic Business Card</title>
+
+<style>
+    :root {
+        --primary: #0b5cab;
+        --primary-dark: #083f76;
+        --accent: #16a085;
+        --text: #17202a;
+        --muted: #667085;
+        --card: rgba(255,255,255,.96);
+        --border: #e5e7eb;
+        --bg1: #eef6ff;
+        --bg2: #f7fffc;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                     "Noto Sans", "Noto Sans CJK SC", Arial, sans-serif;
+        color: var(--text);
+        background:
+            radial-gradient(circle at top right, rgba(11,92,171,.14), transparent 35%),
+            linear-gradient(135deg, var(--bg1), var(--bg2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+    }
+
+    .app {
+        width: min(100%, 480px);
+    }
+
+    .topbar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 12px;
+    }
+
+    .language {
+        border: 1px solid var(--border);
+        background: white;
+        border-radius: 999px;
+        padding: 9px 13px;
+        font-size: .9rem;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(0,0,0,.06);
+    }
+
+    .card {
+        background: var(--card);
+        border: 1px solid rgba(255,255,255,.8);
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 20px 55px rgba(16, 42, 67, .14);
+        backdrop-filter: blur(12px);
+    }
+
+    .hero {
+        padding: 34px 28px 28px;
+        color: white;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        position: relative;
+    }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.08);
+        right: -60px;
+        top: -70px;
+    }
+
+    .avatar {
+        width: 82px;
+        height: 82px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: rgba(255,255,255,.16);
+        border: 2px solid rgba(255,255,255,.55);
+        font-size: 1.7rem;
+        font-weight: 800;
+        margin-bottom: 18px;
+        position: relative;
+        z-index: 1;
+    }
+
+    h1 {
+        margin: 0 0 6px;
+        font-size: clamp(1.8rem, 7vw, 2.45rem);
+        letter-spacing: -.03em;
+        position: relative;
+        z-index: 1;
+    }
+
+    .job {
+        margin: 0;
+        font-size: 1rem;
+        opacity: .94;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hospital {
+        margin-top: 7px;
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
+    }
+
+    .content {
+        padding: 24px 24px 28px;
+    }
+
+    .info {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 22px;
+    }
+
+    .row {
+        display: flex;
+        gap: 13px;
+        align-items: flex-start;
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: #fff;
+    }
+
+    .icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 11px;
+        display: grid;
+        place-items: center;
+        background: #edf5ff;
+        color: var(--primary);
+        flex: 0 0 auto;
+        font-size: 1.05rem;
+    }
+
+    .label {
+        color: var(--muted);
+        font-size: .78rem;
+        margin-bottom: 3px;
+    }
+
+    .value {
+        font-weight: 600;
+        line-height: 1.45;
+    }
+
+    .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    button.action {
+        border: 0;
+        border-radius: 14px;
+        padding: 13px 12px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        color: white;
+        background: var(--primary);
+        transition: transform .15s ease, opacity .15s ease;
+    }
+
+    button.action:hover { transform: translateY(-1px); }
+    button.action:active { transform: translateY(0); opacity: .85; }
+
+    button.secondary {
+        background: #eef2f6;
+        color: var(--text);
+    }
+
+    .footer {
+        text-align: center;
+        color: var(--muted);
+        font-size: .78rem;
+        margin-top: 17px;
+    }
+
+    .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        transform: translate(-50%, 20px);
+        opacity: 0;
+        pointer-events: none;
+        background: #17202a;
+        color: white;
+        padding: 11px 16px;
+        border-radius: 999px;
+        transition: .25s ease;
+        font-size: .9rem;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+
+    @media (max-width: 380px) {
+        body { padding: 12px; }
+        .hero { padding: 28px 22px 23px; }
+        .content { padding: 20px 18px 23px; }
+        .actions { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+
+<body>
+<div class="app">
+
+    <div class="topbar">
+        <select id="language" class="language" aria-label="Language">
+            <option value="auto">🌐 Auto</option>
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="vi">Tiếng Việt</option>
+        </select>
+    </div>
+
+    <main class="card">
+        <section class="hero">
+            <div class="avatar">AF</div>
+            <h1>Akeem Freeman</h1>
+            <p class="job" data-i18n="job">Senior Admin Clerk</p>
+            <p class="hospital" data-i18n="hospital">JNF General Hospital</p>
+        </section>
+
+        <section class="content">
+            <div class="info">
+                <div class="row">
+                    <div class="icon">🏥</div>
+                    <div>
+                        <div class="label" data-i18n="organizationLabel">Organization</div>
+                        <div class="value">JNF General Hospital</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="icon">💼</div>
+                    <div>
+                        <div class="label" data-i18n="positionLabel">Position</div>
+                        <div class="value" data-i18n="job">Senior Admin Clerk</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="icon">📍</div>
+                    <div>
+                        <div class="label" data-i18n="addressLabel">Address</div>
+                        <div class="value">Willets Housing, St Pauls, St Kitts</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="action" onclick="saveContact()" data-i18n="save">Save Contact</button>
+                <button class="action secondary" onclick="shareCard()" data-i18n="share">Share Card</button>
+            </div>
+
+            <div class="footer" data-i18n="footer">
+                Electronic Business Card • Responsive Design
+            </div>
+        </section>
+    </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const translations = {
+    en: {
+        job: "Senior Admin Clerk",
+        hospital: "JNF General Hospital",
+        organizationLabel: "Organization",
+        positionLabel: "Position",
+        addressLabel: "Address",
+        save: "Save Contact",
+        share: "Share Card",
+        footer: "Electronic Business Card • Responsive Design",
+        saved: "Contact card downloaded.",
+        copied: "Card link copied."
+    },
+    zh: {
+        job: "高级行政文员",
+        hospital: "JNF 综合医院",
+        organizationLabel: "机构",
+        positionLabel: "职位",
+        addressLabel: "地址",
+        save: "保存联系人",
+        share: "分享名片",
+        footer: "电子商务名片 • 响应式设计",
+        saved: "联系人名片已下载。",
+        copied: "名片链接已复制。"
+    },
+    ja: {
+        job: "シニア行政事務員",
+        hospital: "JNF総合病院",
+        organizationLabel: "所属機関",
+        positionLabel: "役職",
+        addressLabel: "住所",
+        save: "連絡先を保存",
+        share: "名刺を共有",
+        footer: "電子名刺 • レスポンシブデザイン",
+        saved: "連絡先カードをダウンロードしました。",
+        copied: "名刺リンクをコピーしました。"
+    },
+    ko: {
+        job: "선임 행정 서기",
+        hospital: "JNF 종합병원",
+        organizationLabel: "기관",
+        positionLabel: "직책",
+        addressLabel: "주소",
+        save: "연락처 저장",
+        share: "명함 공유",
+        footer: "전자 명함 • 반응형 디자인",
+        saved: "연락처 카드를 다운로드했습니다.",
+        copied: "명함 링크를 복사했습니다."
+    },
+    vi: {
+        job: "Nhân viên Hành chính Cấp cao",
+        hospital: "Bệnh viện Đa khoa JNF",
+        organizationLabel: "Cơ quan",
+        positionLabel: "Chức vụ",
+        addressLabel: "Địa chỉ",
+        save: "Lưu liên hệ",
+        share: "Chia sẻ danh thiếp",
+        footer: "Danh thiếp điện tử • Thiết kế đáp ứng",
+        saved: "Đã tải thẻ liên hệ.",
+        copied: "Đã sao chép liên kết danh thiếp."
+    }
+};
+
+function detectLanguage() {
+    const lang = (navigator.language || "en").toLowerCase();
+    if (lang.startsWith("zh")) return "zh";
+    if (lang.startsWith("ja")) return "ja";
+    if (lang.startsWith("ko")) return "ko";
+    if (lang.startsWith("vi")) return "vi";
+    return "en";
+}
+
+function setLanguage(lang) {
+    const selected = lang === "auto" ? detectLanguage() : lang;
+    document.documentElement.lang = selected;
+
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.dataset.i18n;
+        if (translations[selected][key]) el.textContent = translations[selected][key];
+    });
+
+    localStorage.setItem("ecardLanguage", lang);
+}
+
+document.getElementById("language").addEventListener("change", e => {
+    setLanguage(e.target.value);
+});
+
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2500);
+}
+
+function saveContact() {
+    const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:Akeem Freeman
+N:Freeman;Akeem;;;
+TITLE:Senior Admin Clerk
+ORG:JNF General Hospital
+ADR:;;Willets Housing;St Pauls;;St Kitts;
+END:VCARD`;
+
+    const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Akeem_Freeman.vcf";
+    a.click();
+    URL.revokeObjectURL(url);
+
+    const lang = document.documentElement.lang || "en";
+    showToast(translations[lang].saved);
+}
+
+async function shareCard() {
+    const shareData = {
+        title: "Akeem Freeman",
+        text: "Akeem Freeman — Senior Admin Clerk, JNF General Hospital",
+        url: window.location.href
+    };
+
+    if (navigator.share) {
+        try {
+            await navigator.share(shareData);
+        } catch (e) {}
+    } else {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            const lang = document.documentElement.lang || "en";
+            showToast(translations[lang].copied);
+        } catch (e) {
+            showToast("Copy this page URL to share the card.");
+        }
+    }
+}
+
+// Restore the visitor's preference; otherwise automatically detect language.
+const savedLanguage = localStorage.getItem("ecardLanguage") || "auto";
+document.getElementById("language").value = savedLanguage;
+setLanguage(savedLanguage);
+</script>
+</body>
+</html>
